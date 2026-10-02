@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>System Diagnostic</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    background:#020402;
+    color:#00ff66;
+    font-family:monospace;
+    min-height:100vh;
+    overflow:hidden;
+}
+
+#screen{
+    padding:22px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    border-bottom:1px solid #00ff66;
+    padding-bottom:12px;
+    margin-bottom:15px;
+}
+
+#terminal{
+    flex:1;
+    overflow:hidden;
+    font-size:14px;
+    line-height:1.55;
+}
+
+.line{
+    opacity:.9;
+}
+
+.progressBox{
+    border:1px solid #00ff66;
+    height:20px;
+    margin-top:10px;
+}
+
+#bar{
+    height:100%;
+    width:0%;
+    background:#00ff66;
+    box-shadow:0 0 12px #00ff66;
+}
+
+#percent{
+    margin-top:8px;
+    text-align:right;
+}
+
+#final{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:#020402;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+}
+
+.warning{
+    font-size:28px;
+    margin-bottom:20px;
+    text-shadow:0 0 15px #00ff66;
+}
+
+.small{
+    font-size:18px;
+    line-height:1.7;
+}
+</style>
+</head>
+
+<body>
+
+<div id="screen">
+
+    <div class="header">
+        <b>TERMINAL DE SEGURIDAD v4.7</b><br>
+        DIAGNÓSTICO DEL SISTEMA
+    </div>
+
+    <div id="terminal"></div>
+
+    <div class="progressBox">
+        <div id="bar"></div>
+    </div>
+
+    <div id="percent">0%</div>
+
+</div>
+
+<div id="final">
+
+    <div class="warning">PROCESO COMPLETADO</div>
+
+    <div class="small">
+        DENIS VA A POR TI<br><br>
+        A PISARTE LAS CABRAS
+    </div>
+
+</div>
+
+<script>
+
+const terminal = document.getElementById("terminal");
+const bar = document.getElementById("bar");
+const percent = document.getElementById("percent");
+const finalScreen = document.getElementById("final");
+
+const messages = [
+    "Inicializando terminal...",
+    "Analizando al sipote...",
+    "Analizando gallos de a cora...",
+    "Analizando a Denis...",
+    "Analizando a Netio...",
+    "Analizando a Gallo Desplumado...",
+    "Analizando conexión a Internet...",
+    "Analizando datos...",
+    "Analizando ubicación en tiempo real...",
+    "Analizando dispositivo...",
+    "Verificando información del sistema...",
+    "Procesando información...",
+    "Comprobando integridad del sistema...",
+    "Finalizando análisis..."
+];
+
+let progress = 0;
+let messageIndex = 0;
+
+function addMessage(){
+
+    if(messageIndex >= messages.length) return;
+
+    const line = document.createElement("div");
+    line.className = "line";
+
+    terminal.appendChild(line);
+
+    let text = messages[messageIndex];
+    let character = 0;
+
+    function type(){
+
+        if(character < text.length){
+
+            line.textContent += text[character];
+
+            character++;
+
+            setTimeout(type,65);
+
+        }else{
+
+            messageIndex++;
+
+            setTimeout(addMessage,1500);
+        }
+    }
+
+    type();
+}
+
+function updateProgress(){
+
+    progress++;
+
+    bar.style.width = progress + "%";
+    percent.textContent = progress + "%";
+
+    if(progress < 100){
+
+        setTimeout(updateProgress,130);
+
+    }else{
+
+        setTimeout(() => {
+
+            document.getElementById("screen").style.display = "none";
+            finalScreen.style.display = "flex";
+
+        },2000);
+    }
+}
+
+addMessage();
+updateProgress();
+
+</script>
+
+</body>
+</html>
